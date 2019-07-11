@@ -19,4 +19,4 @@ joined as (
 ),
 mapper as (select id, platform from md_videogames.platformsid)
 select name, platform, eu_sales, dt from
-tmp join mapper on mapper.id = pid;
+topsales join mapper on mapper.id = pid;
