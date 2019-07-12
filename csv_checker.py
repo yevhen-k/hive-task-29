@@ -23,25 +23,41 @@ max_sales_eu_by_year = df.groupby(by='Year_of_Release')['EU_Sales'].agg({
 }).reset_index()
 
 #%%
-groupper = df.groupby(by='Year_of_Release')
-name = []
-eu_sales = []
-yor = []
-platform = []
-for idx, group in enumerate(groupper):
-    for idy, sales in enumerate(group[1]['EU_Sales']):
-        if sales == max_sales_eu_by_year['EU_Sales'][idx]:
-            name.append(group[1]['Name'].iloc[idy])
-            eu_sales.append(sales)
-            yor.append(max_sales_eu_by_year['Year_of_Release'][idx])
-            platform.append(group[1]['Platform'].iloc[idy])
+# groupper = df.groupby(by='Year_of_Release')
+# name = []
+# eu_sales = []
+# yor = []
+# platform = []
+# for idx, group in enumerate(groupper):
+#     for idy, sales in enumerate(group[1]['EU_Sales']):
+#         if sales == max_sales_eu_by_year['EU_Sales'][idx]:
+#             name.append(group[1]['Name'].iloc[idy])
+#             eu_sales.append(sales)
+#             yor.append(max_sales_eu_by_year['Year_of_Release'][idx])
+#             platform.append(group[1]['Platform'].iloc[idy])
 
-data = {
-    'Name': name, 
-    'EU_Sales': eu_sales, 
-    'Year_of_Release': yor, 
-    'Platform': platform
-}
-result = pd.DataFrame(data=data, columns=['Name', 'EU_Sales', 'Year_of_Release', 'Platform'])
-                
-print(result)
+# data = {
+#     'Name': name, 
+#     'EU_Sales': eu_sales, 
+#     'Year_of_Release': yor, 
+#     'Platform': platform
+# }
+# result = pd.DataFrame(data=data, columns=['Name', 'EU_Sales', 'Year_of_Release', 'Platform'])
+
+#%%
+
+result = pd.DataFrame(columns=df.columns)
+
+for idx in range(max_sales_eu_by_year.shape[0]):
+    result = result.append(
+        df[
+            (df['Year_of_Release'] == max_sales_eu_by_year['Year_of_Release'].iloc[idx])
+            &
+            (df['EU_Sales'] == max_sales_eu_by_year['EU_Sales'].iloc[idx])
+        ]
+    )
+
+
+
+#%%
+result[['Name', 'EU_Sales', 'Year_of_Release', 'Platform']]
